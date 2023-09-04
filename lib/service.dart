@@ -1,3 +1,4 @@
+import 'package:fpdart/fpdart.dart';
 import 'package:intro_dio/api.dart';
 import 'package:intro_dio/models/user_model.dart';
 
@@ -11,11 +12,15 @@ class Service {
   // internal constructor
   Service._internal();
 
-  Future<List<UserModel>> getPosts() async {
-    var response = await Api().dio.get<List<dynamic>>('/posts');
-    List<dynamic> responseData = response.data ?? [];
-    List<UserModel> users =
-        responseData.map((data) => UserModel.fromJson(data)).toList();
-    return users;
+  Future<Either<List<UserModel>, String>> getPosts() async {
+    try {
+      var response = await Api().dio.get<List<dynamic>>('/posts');
+      List<dynamic> responseData = response.data ?? [];
+      List<UserModel> users =
+          responseData.map((data) => UserModel.fromJson(data)).toList();
+      return left(users);
+    } catch (e) {
+      return right(e.toString());
+    }
   }
 }
