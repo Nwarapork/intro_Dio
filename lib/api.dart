@@ -10,7 +10,28 @@ class Api {
   // internal constructor
   Api._internal() {
     // initial dio
-    dio = Dio(BaseOptions(baseUrl: 'https://jsonplaceholder.typicode.com'));
+    dio = Dio(
+      BaseOptions(
+          baseUrl: 'https://jsonplaceholder.typicode.com',
+          connectTimeout: const Duration(seconds: 10),
+          receiveTimeout: const Duration(seconds: 10),
+          responseType: ResponseType.json,
+          headers: {
+            'Accept': 'application/json',
+          }),
+    );
+    dio.interceptors.add(InterceptorsWrapper(
+      onRequest: (options, handler) {
+        return handler.next(options);
+      },
+      onResponse: (response, handler) {
+        return handler.next(response);
+      },
+      onError: (DioException e, handler) {
+        
+      },
+    ));
+    
   }
 }
 

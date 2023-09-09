@@ -21,13 +21,15 @@ class _HomePageState extends State<HomePage> {
   List<UserModel> posts = [];
 
   void getPost() async {
-    var r = await Service().getPosts();
-    var r_1 = await Service().getPost(1);
+    var r = await Service().getPosts(
+      '/posts',
+    );
+    var r_1 = await Service().getPost('/posts/12');
     var r_post = await Service()
-        .createPost(1, 'test title by Dio ❤️', 'test body from Dio 📖');
+        .createPost('/posts', 1, '😵test test test 😵', '❤️👅🐈');
     var r_put = await Service()
-        .updatePost(1, 123, "just update data", "พึ่ง update นะงับ");
-    await Service().deletePost(1);
+        .updatePost('/posts/5', 1, 123, "🫡 Updated 🌊❤️", "นะงับ");
+    await Service().deletePost('posts', '1');
     setState(() {
       result = r;
       result_1 = r_1;
@@ -82,7 +84,7 @@ class _HomePageState extends State<HomePage> {
         //     );
         //   },
         // ),
-        child: result_put.fold(
+        child: result_post.fold(
           (l) {
             return Card(
               elevation: 2, // เพิ่มเงาบางน้อย
